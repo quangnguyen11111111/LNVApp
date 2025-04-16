@@ -1,9 +1,38 @@
 import { StyleSheet, Text, View,Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Colors from '../constant/Colors'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { refreshToken } from './redux/user/userThunk'
+import { useDispatch } from 'react-redux'
 
 const StartApp = ({navigation}) => {
-    // chuyển hướng đến login
+  const dispatch = useDispatch();
+      useEffect (()=>{
+      const  checkToken = async()=>{
+        const token = await AsyncStorage.getItem("accessToken")
+        
+        if (!token) {
+          navigation.navigate("auth", {
+            screen: "loginAccount"
+          });
+      } else {
+          // ✅ Nếu có token -> Gọi API refresh token
+          dispatch(refreshToken())
+              .unwrap()
+              .then(() => {
+                  navigation.replace("tabs");
+              })
+              .catch(() => {
+                navigation.navigate("auth", {
+                  screen: "loginAccount"
+                });
+              });
+              
+      }
+      }
+      checkToken();
+    },[])
+   // chuyển hướng đến login
     routerLogin = ()=>{
       navigation.navigate("auth", {
         screen: "loginAccount"

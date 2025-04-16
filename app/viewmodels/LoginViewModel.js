@@ -6,14 +6,13 @@ import { showToast } from "../../ToastShow/ToastUtil";
 import 'expo-dev-client';
 import { GoogleSignin,GoogleSigninButton  } from '@react-native-google-signin/google-signin';
 
-export const useLoginViewModel = () => {
+export const useLoginViewModel = (navigation) => {
   const [userAccount, setUserAccount] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.user);
   const accountInputRef = useRef(null);
   const passwordInputRef = useRef(null);
-
   const validate = () => {
     if (userAccount === "") {
       showToast("error", "Lỗi", "Vui lòng nhập tài khoản");
@@ -42,6 +41,11 @@ export const useLoginViewModel = () => {
       const response = await dispatch(loginWithGoogleAccount({ userAccount:userInfo.email, userGmail:userInfo.email,userName:userInfo.name })).unwrap();
       if (response.errCode === 0) {
         showToast("success", "Thành công", response.message);
+        navigation.reset({
+          index: 0,  // Chỉ định màn hình đầu tiên trong stack (tabs)
+          routes: [{ name: 'tabs' }],  // Định nghĩa các route muốn giữ lại
+        });
+        
       } else {
         showToast("error", "Thất bại", response.message);
       }
@@ -57,6 +61,10 @@ export const useLoginViewModel = () => {
       const response = await dispatch(loginAccount({ userAccount, userPassword })).unwrap();
       if (response.errCode === 0) {
         showToast("success", "Thành công", response.message);
+        navigation.reset({
+          index: 0,  // Chỉ định màn hình đầu tiên trong stack (tabs)
+          routes: [{ name: 'tabs' }],  // Định nghĩa các route muốn giữ lại
+        });
       } else {
         showToast("error", "Thất bại", response.message);
       }

@@ -28,7 +28,7 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(loginAccount.fulfilled, (state, action) => {
-        state.user = action.payload.user;
+        state.user = action.payload.data;
         state.accessToken = action.payload.accessToken;
         state.isLoading = false;
         state.errCode = action.payload.errCode;
@@ -41,7 +41,7 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(loginWithGoogleAccount.fulfilled, (state, action) => {
-        state.user = action.payload.user;
+        state.user = action.payload.data;
         state.accessToken = action.payload.accessToken;
         state.isLoading = false;
         state.errCode = action.payload.errCode;
@@ -56,6 +56,7 @@ const userSlice = createSlice({
       })
       .addCase(refreshToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken;
+        state.user = action.payload.data
         state.isLoading = false;
       })
 

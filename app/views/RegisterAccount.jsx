@@ -3,7 +3,7 @@ import React from 'react';
 import Colors from "../../constant/Colors";
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 import { useRegisterAccountViewModel } from '../viewmodels/RegisterViewModel';
-
+import styles from "../styles/authStyle"
 export default function RegisterAccount({ navigation }) {
   const {
     user,
@@ -17,7 +17,7 @@ export default function RegisterAccount({ navigation }) {
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}>
         <View style={{ padding: 30 }}>
-          <Image source={require("../../assets/images/logoApp.png")} style={styles.image} />
+          <Image source={require("../../assets/images/logoApp.png")} style={styles.imageRegister} />
           <Text style={styles.textTitle}>Create New Account</Text>
 
           {/* Các Input */}
@@ -67,70 +67,3 @@ export default function RegisterAccount({ navigation }) {
     </View>
   );
 }
-const  styles = StyleSheet.create({
-    image:{
-      width:150,
-      height:150,
-      alignSelf:"center",
-      resizeMode: 'contain'
-    },
-    textTitle:{
-      textAlign:"center",
-      color:Colors.white,
-      fontSize:25,
-      marginBottom:10,
-      fontFamily: "outfit-bold"
-    }
-    ,
-    input:{
-     color:Colors.white,
-     outlineWidth: 0,
-     fontSize:18
-    },
-    viewInput:{
-      borderWidth:2,
-      borderColor:Colors.primary,
-      padding:10,
-      borderRadius:10,
-      marginTop:30
-    },
-    inputText:{
-      color:Colors.white,
-      backgroundColor:Colors.backgroundColor
-    },
-    inputCustomLabel:{
-      topFocused: -30, // Dịch label lên cao hơn khi focus
-      fontSizeFocused: 14,
-      fontSizeBlurred: 16,
-      colorFocused:Colors.label
-    },
-    button:{
-      padding: 10,
-      backgroundColor: Colors.backgroundButton,
-      borderWidth:1,
-      borderColor:"#354389",
-      marginTop: 20,
-      borderRadius: 8,
-      elevation: 5,
-      justifyContent:"center"
-    },
-    buttonText:{
-      fontSize:20,
-      color:Colors.white,
-      textAlign:"center",
-      fontFamily:"outfit-bold",
-    },
-    error:{
-      color:Colors.red,
-      fontSize:15,
-      position:"absolute",
-      bottom:-20,
-      left:5
-    },
-    bottomText: {
-        flexDirection: "row",
-        justifyContent: "center",
-        gap: 5,
-        marginTop: 15,
-      },
-  })

@@ -6,7 +6,6 @@ import {
   refreshTokenApi,
   loginWithGoogleApi
 } from "./userApi";
-
 // Hàm xử lý lỗi chung
 const handleError = (e, { rejectWithValue }) => {
   console.error("Lỗi khi gọi API:", e);
@@ -24,11 +23,11 @@ export const loginAccount = createAsyncThunk("user/loginAccount", async (data, {
   try {
     const res = await loginApi(data);
     if (res && res.errCode === 0) {
-      const { user, message, accessToken, refreshToken, errCode } = res;
+      const { data, message, accessToken, refreshToken, errCode } = res;
       // lưu token vào store
       await AsyncStorage.setItem("accessToken", accessToken);
       await AsyncStorage.setItem("refreshToken", refreshToken);
-      return { user, accessToken, message, errCode };
+      return { data, accessToken, message, errCode };
     } else {
       return { message: res.message, errCode: res.errCode };
     }
@@ -44,11 +43,13 @@ export const refreshToken = createAsyncThunk("user/refreshToken", async (_, { re
 
     const res = await refreshTokenApi(storedRefreshToken);
     const accessToken = res.accessToken;
+    const data = res.data
     if (!accessToken) {
       return rejectWithValue({ message: res.message });
     }
     await AsyncStorage.setItem("accessToken", accessToken);
-    return { accessToken };
+    
+    return { accessToken,data };
   } catch (e) {
     return handleError(e, { rejectWithValue });
   }
@@ -73,11 +74,11 @@ export const loginWithGoogleAccount = createAsyncThunk("user/loginWithGoogleAcco
   try {
     const res = await loginWithGoogleApi(data);
     if (res && res.errCode === 0) {
-      const { user, message, accessToken, refreshToken, errCode } = res;
+      const { data, message, accessToken, refreshToken, errCode } = res;
       // lưu token vào store
       await AsyncStorage.setItem("accessToken", accessToken);
       await AsyncStorage.setItem("refreshToken", refreshToken);
-      return { user, accessToken, message, errCode };
+      return { data, accessToken, message, errCode };
     } else {
       return { message: res.message, errCode: res.errCode };
     }

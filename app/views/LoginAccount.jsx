@@ -38,7 +38,7 @@ export default function LoginAccount({ navigation }) {
             source={require("../../assets/images/logoApp.png")}
             style={styles.imageLogin}
           />
-          <Text style={styles.textTitle}>Wellcome Back</Text>
+          <Text style={styles.textTitle}>Chào mừng trở lại</Text>
 
           <FloatingLabelInput
             ref={accountInputRef}
@@ -68,7 +68,7 @@ export default function LoginAccount({ navigation }) {
             {isLoading ? (
               <ActivityIndicator size="small" color={Colors.backgroundColor} />
             ) : (
-              <Text style={styles.buttonText}>Sign In</Text>
+              <Text style={styles.buttonText}>Đăng nhập</Text>
             )}
           </TouchableOpacity>
           <View style={{
@@ -76,7 +76,7 @@ export default function LoginAccount({ navigation }) {
             justifyContent: "center", marginTop: 5
           }}>
             <Text style={{ fontFamily: "outfit", color: Colors.white }}>
-              Or login with:
+              Hoặc đăng nhập với:
             </Text>
           </View>
           <GoogleSigninButton
@@ -88,12 +88,12 @@ export default function LoginAccount({ navigation }) {
 
           <View style={styles.bottomText}>
             <Text style={{ fontFamily: "outfit", color: Colors.white }}>
-              Don't have an account ?
+             Bạn chưa có tài khoản? 
             </Text>
             <Pressable onPress={() => navigation.replace("registerAccount")}>
               {({ pressed }) => (
                 <Text style={{ color: pressed ? Colors.white : Colors.primary }}>
-                  Create New Here
+                  Ấn vào đây
                 </Text>
               )}
             </Pressable>

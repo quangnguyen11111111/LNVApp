@@ -17,7 +17,7 @@ const LessonDetail = ({navigation}) => {
       {/* View folders */}
       <View style={[baseTabsStyle.viewFolders,{marginTop:5}]}>
         {/* View folder */}
-        <View style={baseTabsStyle.viewFolder} >
+        <TouchableOpacity style={baseTabsStyle.viewFolder} onPress={()=>navigation.navigate("optionLearn")} >
           {/* View Top folder */}
           <View
             style={baseTabsStyle.viewTopFolder}
@@ -44,7 +44,7 @@ const LessonDetail = ({navigation}) => {
               Folder 1
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
         {/* View folder */}
         <View style={baseTabsStyle.viewFolder} >
           {/* View Top folder */}

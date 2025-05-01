@@ -1,0 +1,53 @@
+import { StyleSheet } from "react-native";
+import Colors from "../../constant/Colors"
+const homeOption = StyleSheet.create({
+    container:{
+        backgroundColor:Colors.backgroundColor,
+        flex:1
+    },
+    viewHeader:{
+        marginStart:20,
+        marginEnd:20,
+        marginTop:10,
+        borderBottomWidth:2,
+        borderColor:"gray",
+        paddingBottom:10,
+        display:"flex",
+        flexDirection:"row",
+        alignItems:"center",
+        gap:10,
+    },
+    onPressHeader:{
+        width:60,
+        height:30,
+        alignItems:"flex-start",
+        marginTop:5
+    },
+    containerOption:{
+        paddingStart:10,
+        paddingEnd:10
+    },
+    textNameFile:{
+        fontSize:20,
+        fontWeight:400,
+        marginTop:15,
+        marginStart:10,
+        color:Colors.white
+    },
+    viewItemTouchableOpacity:{
+        backgroundColor:Colors.itemColor,
+        display:"flex",
+        flexDirection:"row",
+        gap:10,
+        alignItems:"center",
+        padding:12,
+        borderRadius:10,
+        marginTop:12
+    },
+    textViewItem:{
+        fontSize:16,
+        fontWeight:500,
+        color:Colors.white
+    }
+})
+export default homeOption; 

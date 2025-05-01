@@ -58,11 +58,11 @@ const StartApp = ({navigation}) => {
       <TouchableOpacity style={styles.button}
       onPress={()=>routerLogin()}
       >
-        <Text style={[styles.buttonText]}>Login Account</Text>
+        <Text style={[styles.buttonText]}>Đăng nhập</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button,{backgroundColor:Colors.backgroundColor
       }]}  onPress={()=>routerRegister()} >
-        <Text style={styles.buttonText} >Register</Text>
+        <Text style={styles.buttonText} >Đăng kí</Text>
       </TouchableOpacity>
       </View>
 

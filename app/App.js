@@ -14,10 +14,15 @@ import Profile from "./views/(tabs)/profile";
 import AddModal from "./views/(tabs)/add";
 import AddNewCourse from "./views/addNew/AddNewCourse";
 import AddNewLesson from "./views/addNew/AddNewLesson";
+import PairingCard from "./views/optionLearn/pairingCard";
+import Learn from "./views/optionLearn/learn";
 // import Course from "./views/(tabs)/course";
 import CourseDetail from "./views/(tabs)/course/courseDetail";
 import LessonDetail from "./views/(tabs)/course/lessonDetail";
 import CourseOther from "./views/(tabs)/courseOther";
+import HomeOption from "./views/optionLearn/homeOption";
+import FlipCardOption from "./views/optionLearn/flipCard";
+import TakeTheTest from "./views/optionLearn/takeTheTest";
 //
 import Toast from "react-native-toast-message";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -56,6 +61,7 @@ export default function App({ navigation }) {
           <Stack.Screen name="auth" component={AuthNavigation} />
           <Stack.Screen name="tabs" component={Tabs} />
           <Stack.Screen name="addNew" component={AddNew} />
+          <Stack.Screen name="optionLearn" component={OptionLearn} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />
@@ -232,3 +238,18 @@ const Course = () => {
   </>
   );
 };
+const OptionLearn = ()=>{
+  return(
+    <>
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }} >
+      <Stack.Screen name="homeOption" component={HomeOption} />
+      <Stack.Screen name="flipCard" component={FlipCardOption} />
+      <Stack.Screen name="pairingCard" component={PairingCard} />
+      <Stack.Screen name="takeTheTest" component={TakeTheTest} />
+      <Stack.Screen name="learn" component={Learn} />
+    </Stack.Navigator>
+    </>
+  )
+}

@@ -18,7 +18,7 @@ export default function RegisterAccount({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}>
         <View style={{ padding: 30 }}>
           <Image source={require("../../assets/images/logoApp.png")} style={styles.imageRegister} />
-          <Text style={styles.textTitle}>Create New Account</Text>
+          <Text style={styles.textTitle}>Tạo tài khoản mới</Text>
 
           {/* Các Input */}
           {[
@@ -50,15 +50,15 @@ export default function RegisterAccount({ navigation }) {
             {isLoading ? (
               <ActivityIndicator size="small" color={Colors.backgroundColor} />
             ) : (
-              <Text style={styles.buttonText}>Sign Up</Text>
+              <Text style={styles.buttonText}>Đăng ký</Text>
             )}
           </TouchableOpacity>
 
           <View style={styles.bottomText}>
-            <Text style={{ fontFamily: "outfit", color: Colors.white }}>Already have an account?</Text>
+            <Text style={{ fontFamily: "outfit", color: Colors.white }}>Bạn đã có tài khoản?</Text>
             <Pressable onPress={() => navigation.replace("loginAccount")}>
               {({ pressed }) => (
-                <Text style={{ color: pressed ? Colors.white : Colors.primary }}>Sign In Here</Text>
+                <Text style={{ color: pressed ? Colors.white : Colors.primary }}>Ấn vào đây</Text>
               )}
             </Pressable>
           </View>

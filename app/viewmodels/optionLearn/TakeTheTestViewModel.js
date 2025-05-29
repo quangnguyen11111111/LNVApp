@@ -6,26 +6,27 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { showToast } from "../../ToastShow/ToastUtil";
+import { showToast } from "../../../ToastShow/ToastUtil";
 import { InteractionManager } from "react-native";
-const ORIGINAL_DATA = [
-  { id: "1", source: "Dog", target: "Chó" },
-  { id: "2", source: "Sun", target: "Mặt trời" },
-  { id: "3", source: "Water", target: "Nước" },
-  { id: "4", source: "Cat", target: "Mèo" },
-  { id: "5", source: "Moon", target: "Mặt trăng" },
-  { id: "6", source: "Fire", target: "Lửa" },
-  { id: "7", source: "Tree", target: "Cây" },
-  { id: "8", source: "Book", target: "Sách" },
-  { id: "9", source: "Pen", target: "Bút" },
-  { id: "10", source: "Car", target: "Xe hơi" },
-  { id: "11", source: "Cloud", target: "Đám mây" },
-  { id: "12", source: "River", target: "Dòng sông" },
-  { id: "13", source: "Mountain", target: "Núi" },
-];
+import { useSelector } from "react-redux";
+// const ORIGINAL_DATA = [
+//   { detailID: "1", fileSource: "Dog", fileTarget: "Chó" },
+//   { detailID: "2", fileSource: "Sun", fileTarget: "Mặt trời" },
+//   { detailID: "3", fileSource: "Water", fileTarget: "Nước" },
+//   { detailID: "4", fileSource: "Cat", fileTarget: "Mèo" },
+//   { detailID: "5", fileSource: "Moon", fileTarget: "Mặt trăng" },
+//   { detailID: "6", fileSource: "Fire", fileTarget: "Lửa" },
+//   { detailID: "7", fileSource: "Tree", fileTarget: "Cây" },
+//   { detailID: "8", fileSource: "Book", fileTarget: "Sách" },
+//   { detailID: "9", fileSource: "Pen", fileTarget: "Bút" },
+//   { detailID: "10", fileSource: "Car", fileTarget: "Xe hơi" },
+//   { detailID: "11", fileSource: "Cloud", fileTarget: "Đám mây" },
+//   { detailID: "12", fileSource: "River", fileTarget: "Dòng sông" },
+//   { detailID: "13", fileSource: "Mountain", fileTarget: "Núi" },
+// ];
 // hàm shuffleArrayF để trộn mảng dữ liệu
-const shuffleArrayF = () => {
-  const shuffled = [...ORIGINAL_DATA]; // tạo bản sao để không làm thay đổi mảng gốc
+const shuffleArrayF = (ORIGINAL_DATA1) => {
+  const shuffled = [...ORIGINAL_DATA1]; // tạo bản sao để không làm thay đổi mảng gốc
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1)); // chọn vị trí ngẫu nhiên
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // hoán đổi phần tử
@@ -44,6 +45,10 @@ const getRandomOptions = (correct, allTargets) => {
   return options.sort(() => Math.random() - 0.5);
 };
 export default function TakeTheTestViewModel() {
+  const { isLoading, fileDetail, fileName } = useSelector(
+    (state) => state.file
+  );
+  const ORIGINAL_DATA = fileDetail;
   // xử lí giao diện SetUpTest
   const [modeTransform, setModeTransform] = useState("SetUpTest");
   const [isEnabledEssay, setIsEnabledEssay] = useState(false);
@@ -53,7 +58,7 @@ export default function TakeTheTestViewModel() {
   const flatListRef = useRef(null);
   const [shuffleArray, setShuffleArray] = useState([]);
   const [modelNow, setModelNow] = useState("");
-  const[inputText,setInputText]=useState("")
+  const [inputText, setInputText] = useState("");
   const inputTextRef = useRef(null);
   const [indexModel, setIndexModel] = useState(0); //chỉ số câu của model
   //xử lí dữ liệu và câu trả lời của người dùng
@@ -74,17 +79,17 @@ export default function TakeTheTestViewModel() {
     []
   );
   const setModeTransformToStartTest = () => {
-      if (isEnabledEssay || isEnabledMultipleChoice || isEnabledPairingCard) {
-        setModeTransform("StartTest");
-      } else {
-        showToast("error", "Lỗi", "Vui lòng chọn ít nhất một chế độ kiểm tra");
-      }
+    if (isEnabledEssay || isEnabledMultipleChoice || isEnabledPairingCard) {
+      setModeTransform("StartTest");
+    } else {
+      showToast("error", "Lỗi", "Vui lòng chọn ít nhất một chế độ kiểm tra");
+    }
   };
   // xử lí giao diện StartTest
 
   useEffect(() => {
     if (modeTransform == "SetUpTest") {
-      setShuffleArray(shuffleArrayF());
+      setShuffleArray(shuffleArrayF(ORIGINAL_DATA));
     }
   }, [modeTransform]);
   //danh sách chế độ người dùng chọn
@@ -119,8 +124,8 @@ export default function TakeTheTestViewModel() {
     if (nextIndex < shuffleArray.length) {
       flatListRef.current?.scrollToIndex({ index: nextIndex });
       setCurrentIndex(nextIndex); // chuyển đến câu tiếp theo
-    }else{
-      setModeTransform("resultTest")
+    } else {
+      setModeTransform("resultTest");
     }
   }, [currentIndex, lengDataUse, enabledModes, shuffleArray.length]);
   // Tạo dữ liệu đúng/sai ngẫu nhiên từ shuffleArray
@@ -132,13 +137,13 @@ export default function TakeTheTestViewModel() {
         .map((item) => {
           const isCorrect = Math.random() > 0.5;
           const randomTarget = isCorrect
-            ? item.target
+            ? item.fileTarget
             : ORIGINAL_DATA[Math.floor(Math.random() * ORIGINAL_DATA.length)]
-                .target;
+                .fileTarget;
           return {
             ...item,
             displayedTarget: randomTarget,
-            isCorrectAnswer: item.target === randomTarget,
+            isCorrectAnswer: item.fileTarget === randomTarget,
           };
         });
       setTrueOrFalseData(generateTrueOrFalseData);
@@ -150,10 +155,13 @@ export default function TakeTheTestViewModel() {
       setAnswersResult((prev) => [
         ...prev,
         {
-          id: currentItem.id,
-          source: currentItem.source,
+          detailID: currentItem.detailID,
+          fileSource: currentItem.fileSource,
           displayedTarget: currentItem.displayedTarget,
-          isCorrectDisplayTrue:currentItem.target === currentItem.displayedTarget ?'Đúng':'Sai',
+          isCorrectDisplayTrue:
+            currentItem.fileTarget === currentItem.displayedTarget
+              ? "Đúng"
+              : "Sai",
           userAnswer,
           isCorrect,
         },
@@ -172,24 +180,21 @@ export default function TakeTheTestViewModel() {
   // Tạo các lựa chọn trắc nghiệm an toàn
   const options = useMemo(() => {
     if (modelNow === "multipleChoice" && word) {
-      const allTargets = ORIGINAL_DATA.map((item) => item.source);
-      return getRandomOptions(word.source, allTargets, word.target);
+      const allTargets = ORIGINAL_DATA.map((item) => item.fileSource);
+      return getRandomOptions(word.fileSource, allTargets, word.fileTarget);
     }
     return []; // Trả về mảng rỗng nếu không phải mode trắc nghiệm hoặc không có word
-  }, [ word]); // Phụ thuộc modelNow và word
-  useEffect(() => {
-    console.log("answersResult", answersResult);
-  }, [answersResult]);
+  }, [word]); // Phụ thuộc modelNow và word
   //Hàm xử lí đúng sai MultipleChoice
   const handleMultipleChoiceAnswer = useCallback(
     (userAnswer, dataItem) => {
-      const isCorrect = userAnswer === dataItem.source;
+      const isCorrect = userAnswer === dataItem.fileSource;
       setAnswersResult((prev) => [
         ...prev,
         {
-          id: dataItem.id,
-          source: dataItem.source,
-          displayedTarget: dataItem.target,
+          detailID: dataItem.detailID,
+          fileSource: dataItem.fileSource,
+          displayedTarget: dataItem.fileTarget,
           userAnswer,
           isCorrect,
         },
@@ -198,43 +203,39 @@ export default function TakeTheTestViewModel() {
     },
     [handleAnswer]
   );
-  const handleEssayAnswer =
-   async (userAnswer, dataItem) => {
-   
-    
-        
-        const isCorrect = userAnswer === dataItem.source;
-      setAnswersResult((prev) => [
-        ...prev,
-        {
-          id: dataItem.id,
-          source: dataItem.source,
-          displayedTarget: dataItem.target,
-          userAnswer,
-          isCorrect,
-        },
-      ]);
-      
-      if (currentIndex + 1 == lengDataUse && enabledModes.length > 1) {
-        setModelNow(enabledModes[1]);
-      }
-      if (currentIndex + 1 == lengDataUse * 2 && enabledModes.length == 3) {
-        setModelNow(enabledModes[2]);
-      }
-      let nextIndex = currentIndex + 1;
-      if (nextIndex < shuffleArray.length) {
-       await flatListRef.current?.scrollToIndex({ index: nextIndex });
-        setCurrentIndex(nextIndex); // chuyển đến câu tiếp theo
-      }else{
-        setModeTransform("resultTest")
-      }
+  const handleEssayAnswer = async (userAnswer, dataItem) => {
+    const isCorrect = userAnswer === dataItem.fileSource;
+    setAnswersResult((prev) => [
+      ...prev,
+      {
+        detailID: dataItem.detailID,
+        fileSource: dataItem.fileSource,
+        displayedTarget: dataItem.fileTarget,
+        userAnswer,
+        isCorrect,
+      },
+    ]);
+
+    if (currentIndex + 1 == lengDataUse && enabledModes.length > 1) {
+      setModelNow(enabledModes[1]);
     }
-    const handleRetry =()=>{
-      setAnswersResult([])
-      setModelNow(enabledModes[0])
-      setCurrentIndex(0)
-      setModeTransform('StartTest')
+    if (currentIndex + 1 == lengDataUse * 2 && enabledModes.length == 3) {
+      setModelNow(enabledModes[2]);
     }
+    let nextIndex = currentIndex + 1;
+    if (nextIndex < shuffleArray.length) {
+      await flatListRef.current?.scrollToIndex({ index: nextIndex });
+      setCurrentIndex(nextIndex); // chuyển đến câu tiếp theo
+    } else {
+      setModeTransform("resultTest");
+    }
+  };
+  const handleRetry = () => {
+    setAnswersResult([]);
+    setModelNow(enabledModes[0]);
+    setCurrentIndex(0);
+    setModeTransform("StartTest");
+  };
   return {
     modeTransform,
     setModeTransform,
@@ -259,9 +260,10 @@ export default function TakeTheTestViewModel() {
     lengDataUse,
     handleMultipleChoiceAnswer,
     //tu luan
-    inputText  ,setInputText,
+    inputText,
+    setInputText,
     inputTextRef,
     currentIndex,
-    handleRetry
+    handleRetry,
   };
 }

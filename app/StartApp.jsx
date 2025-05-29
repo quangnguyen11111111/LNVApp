@@ -1,21 +1,18 @@
-import { StyleSheet, Text, View,Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect } from 'react'
 import Colors from '../constant/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { refreshToken } from './redux/user/userThunk'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const StartApp = ({navigation}) => {
+      const {isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
       useEffect (()=>{
       const  checkToken = async()=>{
         const token = await AsyncStorage.getItem("accessToken")
         
-        if (!token) {
-          navigation.navigate("auth", {
-            screen: "loginAccount"
-          });
-      } else {
+        if (token) {
           // ✅ Nếu có token -> Gọi API refresh token
           dispatch(refreshToken())
               .unwrap()
@@ -55,6 +52,12 @@ const StartApp = ({navigation}) => {
         padding:25
       }} >
       <Image source={require("../assets/images/logoApp.png")} style={styles.image} />
+      <>
+      {isLoading? 
+      
+      <ActivityIndicator size="large" color={Colors.backgroundFlower} />
+      :
+      <>
       <TouchableOpacity style={styles.button}
       onPress={()=>routerLogin()}
       >
@@ -64,6 +67,9 @@ const StartApp = ({navigation}) => {
       }]}  onPress={()=>routerRegister()} >
         <Text style={styles.buttonText} >Đăng kí</Text>
       </TouchableOpacity>
+      </>
+      }
+      </>
       </View>
 
     </View>

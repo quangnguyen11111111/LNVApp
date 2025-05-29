@@ -1,14 +1,14 @@
 import { useFonts } from "expo-font";
 import { Text, StatusBar, TextInput } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import Colors from "../constant/Colors";
 //Khai báo đường dẫn
 import StartApp from "./StartApp";
-import LoginAccount from "./views/LoginAccount";
-import RegisterAccount from "./views/RegisterAccount";
+import LoginAccount from "./views/auth/LoginAccount";
+import RegisterAccount from "./views/auth/RegisterAccount";
 import Home from "./views/(tabs)/home";
 import Profile from "./views/(tabs)/profile";
 import AddModal from "./views/(tabs)/add";
@@ -51,7 +51,7 @@ export default function App({ navigation }) {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="tabs"
+          initialRouteName="startApp"
           screenOptions={{
             headerShown: false,
             cardStyle: { backgroundColor: Colors.backgroundColor },
@@ -177,7 +177,28 @@ const Tabs = () => {
         })}
       >
         <Tab.Screen name="home" component={Home} />
-        <Tab.Screen name="course" component={Course} />
+        <Tab.Screen
+  name="course"
+  component={Course}
+  listeners={({ navigation }) => ({
+    tabPress: (e) => {
+      e.preventDefault();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'course',
+              state: {
+                routes: [{ name: 'courseDetail' }],
+              },
+            },
+          ],
+        })
+      );
+    },
+  })}
+/>
         <Tab.Screen
           name="add"
           component={EmptyScreen}
@@ -193,7 +214,7 @@ const Tabs = () => {
       </Tab.Navigator>
       <AddModal visible={isAddModalVisible} onClose={closeModal} />
       <StatusBar
-        barStyle="dark-content"
+        barStyle="light-content"
         backgroundColor={Colors.backgroundFlower}
       />
     </>
@@ -225,14 +246,14 @@ const Course = () => {
     <>
     <Stack.Navigator 
     screenOptions={{
-      headerShown: false
+      headerShown: false,
     }}
     >
       <Stack.Screen name="courseDetail" component={CourseDetail} />
       <Stack.Screen name="lessonDetail" component={LessonDetail} />
     </Stack.Navigator>
     <StatusBar
-    barStyle="dark-content"
+    barStyle="light-content"
     backgroundColor={Colors.backgroundColor}
   />
   </>

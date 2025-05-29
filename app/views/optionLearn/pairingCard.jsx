@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import pairingCardStyle from '../../styles/pairingCardStyle';
 import { Feather } from '@expo/vector-icons';
-import { PairingCardViewModel } from '../../viewmodels/PairingCardViewModel';
+import { PairingCardViewModel } from '../../viewmodels/optionLearn/PairingCardViewModel';
 
 const PairingCard = ({ navigation }) => {
   const{

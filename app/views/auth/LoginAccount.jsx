@@ -10,11 +10,11 @@ import {
   ActivityIndicator,
   Button
 } from "react-native";
-import Colors from "../../constant/Colors";
+import Colors from "../../../constant/Colors";
 import React from "react";
 import { FloatingLabelInput } from "react-native-floating-label-input";
-import { useLoginViewModel } from "../viewmodels/LoginViewModel";
-import styles from "../styles/authStyle"
+import { useLoginViewModel } from "../../viewmodels/auth/LoginViewModel";
+import styles from "../../styles/authStyle"
 export default function LoginAccount({ navigation }) {
   const {
     userAccount,
@@ -35,7 +35,7 @@ export default function LoginAccount({ navigation }) {
       <ScrollView>
         <View style={{ padding: 25 }}>
           <Image
-            source={require("../../assets/images/logoApp.png")}
+            source={require("../../../assets/images/logoApp.png")}
             style={styles.imageLogin}
           />
           <Text style={styles.textTitle}>Chào mừng trở lại</Text>
@@ -88,7 +88,7 @@ export default function LoginAccount({ navigation }) {
 
           <View style={styles.bottomText}>
             <Text style={{ fontFamily: "outfit", color: Colors.white }}>
-             Bạn chưa có tài khoản? 
+              Bạn chưa có tài khoản?
             </Text>
             <Pressable onPress={() => navigation.replace("registerAccount")}>
               {({ pressed }) => (

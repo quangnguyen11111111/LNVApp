@@ -3,7 +3,7 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import takeTheTestStyle from '../../styles/takeTheTestStyle';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import pairingCardStyle from '../../styles/pairingCardStyle';
-import TakeTheTestViewModel from '../../viewmodels/TakeTheTestViewModel';
+import TakeTheTestViewModel from '../../viewmodels/optionLearn/TakeTheTestViewModel';
 import learnStyle from '../../styles/learnStyle';
 import Colors from '../../../constant/Colors';
 
@@ -37,7 +37,7 @@ const TakeTheTest = ({ navigation }) => {
     handleRetry
   } = TakeTheTestViewModel();
   const totalCorrect = answersResult.filter(item => item.isCorrect === true).length;
-const totalIncorrect = answersResult.filter(item => item.isCorrect === false).length;
+  const totalIncorrect = answersResult.filter(item => item.isCorrect === false).length;
 
   return (
     <View style={takeTheTestStyle.container}>
@@ -68,7 +68,7 @@ const totalIncorrect = answersResult.filter(item => item.isCorrect === false).le
           handleAnswer={handleEssayAnswer}
           modelNow={modelNow}
           trueOrFalseData={trueOrFalseData}
-         
+
           handleTrueOrFalseAnswer={handleTrueOrFalseAnswer}
           options={options}
           word={word}
@@ -81,8 +81,8 @@ const totalIncorrect = answersResult.filter(item => item.isCorrect === false).le
           currentIndex={currentIndex}
         />
       )}
-      {modeTransform==='resultTest'&&(
-        <ResultTest  answersResult={answersResult} totalCorrect={totalCorrect} totalIncorrect={totalIncorrect} handleRetry={handleRetry} navigation={navigation}/>
+      {modeTransform === 'resultTest' && (
+        <ResultTest answersResult={answersResult} totalCorrect={totalCorrect} totalIncorrect={totalIncorrect} handleRetry={handleRetry} navigation={navigation} />
       )}
     </View>
   );
@@ -125,7 +125,7 @@ const SetUpTest = ({
         />
       </View>
       <View style={takeTheTestStyle.viewModelTest}>
-        <Text style={takeTheTestStyle.textModelTest}>Kiểm tra ghép từ</Text>
+        <Text style={takeTheTestStyle.textModelTest}>Kiểm tra đúng sai</Text>
         <Switch
           trackColor={{ false: '#767577', true: '#81b0ff' }}
           thumbColor={isEnabledPairingCard ? '#2196f3' : '#f4f3f4'}
@@ -161,13 +161,13 @@ const StartTest = ({
 }) => (
   <View style={takeTheTestStyle.viewStartTest}>
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height" }
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
       <FlatList
         ref={flatListRef}
         data={shuffleArray}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.detailID}
         horizontal={true}
         onContentSizeChange={() => {
           flatListRef.current.scrollToIndex({ index: currentIndex });  // Cuộn đến index hiện tại
@@ -226,7 +226,7 @@ const StartTest = ({
 const TrueOrFalse = memo(({ item, handleAnswer }) => (
   <View style={takeTheTestStyle.viewTrueOrFalse}>
     <Text style={takeTheTestStyle.textTitle}>Định nghĩa</Text>
-    <Text style={takeTheTestStyle.textItem}>{item.source}</Text>
+    <Text style={takeTheTestStyle.textItem}>{item.fileSource}</Text>
     <Text style={takeTheTestStyle.textTitle}>Thuật ngữ</Text>
     <Text style={takeTheTestStyle.textItem}>{item.displayedTarget}</Text>
     <Text style={[takeTheTestStyle.textTitle, { marginTop: 10 }]}>Chọn câu trả lời</Text>
@@ -247,7 +247,7 @@ const TrueOrFalse = memo(({ item, handleAnswer }) => (
 
 const MultipleChoice = memo(({ handleAnswer, options, word }) => (
   <View style={takeTheTestStyle.container}>
-    <Text style={takeTheTestStyle.textSourceMultipleChoice}>{word.target}</Text>
+    <Text style={takeTheTestStyle.textSourceMultipleChoice}>{word.fileTarget}</Text>
     <Text style={learnStyle.question}>Chọn câu trả lời:</Text>
     {options.map((option, idx) => (
       <TouchableOpacity
@@ -270,127 +270,128 @@ const Essay = memo(({ word, handleAnswer }) => {
     const timeout = setTimeout(() => {
       inputTextRef.current?.focus();
     }, 350); // Delay nhẹ 100ms để đảm bảo FlatList đã mount xong
-  
+
     return () => clearTimeout(timeout);
   });
-  
+
   const submitAnswer = () => {
-     setTimeout(() => {
+    setTimeout(() => {
       handleAnswer(inputText, word); // Gọi handler với text và word hiện tại
-     setInputText(''); // Xóa input sau khi nộp
-     }, 500);
+      setInputText(''); // Xóa input sau khi nộp
+    }, 500);
   };
 
- return (
-  <View style={[takeTheTestStyle.container]}>
-  <View style={{ flex: 1 }}>
-    <Text style={[learnStyle.questionText, { width: "96%" }]}>{word.target}</Text>
-    <TextInput
-      ref={inputTextRef}
-      value={inputText}
-      onChangeText={setInputText}
-      placeholder="Nhập đáp án"
-      style={[{width: '96%',marginVertical:20,
-        borderBottomWidth:3,
-        borderBlockColor:"gray",
-        fontSize:16
-      }]}
-      onSubmitEditing={submitAnswer}
-    />
-  </View>
-</View>
- );
+  return (
+    <View style={[takeTheTestStyle.container]}>
+      <View style={{ flex: 1 }}>
+        <Text style={[learnStyle.questionText, { width: "96%" }]}>{word.fileTarget}</Text>
+        <TextInput
+          ref={inputTextRef}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Nhập đáp án"
+          style={[{
+            width: '96%', marginVertical: 20,
+            borderBottomWidth: 3,
+            borderBlockColor: "gray",
+            fontSize: 16
+          }]}
+          onSubmitEditing={submitAnswer}
+        />
+      </View>
+    </View>
+  );
 });
-const ResultTest = memo(({answersResult,totalCorrect,totalIncorrect,handleRetry,navigation})=>(
-<ScrollView style={{    backgroundColor:Colors.backgroundColor,}}>
-  <View style={takeTheTestStyle.container}>
-    <View style={takeTheTestStyle.viewResultHeader}>
-    <Text style={takeTheTestStyle.textTitleResultHeader} >Kết quả của bạn</Text>
-    <View style={{alignItems:'center'}}>
-      <Text style={[takeTheTestStyle.textCountResult,{color:Colors.green}]}>Đúng: {totalCorrect}</Text>
-      <Text style={[takeTheTestStyle.textCountResult,{color:Colors.red}]}>Sai: {totalIncorrect}</Text>
-    </View>
-    </View>
-    <TouchableOpacity style={takeTheTestStyle.touchableOpacityRetry} onPress={handleRetry}>
-      <Text style={takeTheTestStyle.textRetry}>Làm lại bài kiểm tra</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={takeTheTestStyle.touchableOpacityRetry} onPress={()=>navigation.goBack()}>
-      <Text style={takeTheTestStyle.textRetry}>Quay lại ôn tập</Text>
-    </TouchableOpacity>
-    <Text style={takeTheTestStyle.textTitleResult}>Đáp án kiểm tra</Text>
-     {answersResult && answersResult.map((item, index) => {
-  if (item.userAnswer === true || item.userAnswer === false) {
-    return (
-      <View style={takeTheTestStyle.viewItemResult} key={index}>
-        <View style={takeTheTestStyle.viewItemResultIn}>
-          <Text style={[takeTheTestStyle.textItemHeader, { borderBottomWidth: 1, borderBottomColor: Colors.itemColor }]}>{item.source}</Text>
-          <Text style={takeTheTestStyle.textItemHeader}>{item.displayedTarget}</Text>
-          {/* hiển thị đáp án  */}
-          <View style={takeTheTestStyle.viewAnswer}>
-            <View>
-              <AntDesign name="check" size={28} color={Colors.green} />
-              <Text style={{color:Colors.green}}> {item.isCorrectDisplayTrue}</Text>
-            </View>
-            {!item.isCorrect&&<View>
-              <Feather name="x" size={28} color={Colors.red} />
-              <Text style={{color:Colors.red}}> {item.userAnswer}</Text>
-            </View>}
-          </View>
-        </View>
-        {/* View người dùng trả lời */}
-        <View style={[takeTheTestStyle.viewResultBottom, { backgroundColor: item.isCorrect ? Colors.green : Colors.red }]}>
-          {item.isCorrect ? (
-            <>
-              <AntDesign name="check" size={24} color="white" />
-              <Text>Đúng</Text>
-            </>
-          ) : (
-            <>
-              <Feather name="x" size={24} color="white" />
-              <Text>Sai</Text>
-            </>
-          )}
+const ResultTest = memo(({ answersResult, totalCorrect, totalIncorrect, handleRetry, navigation }) => (
+  <ScrollView style={{ backgroundColor: Colors.backgroundColor, }}>
+    <View style={takeTheTestStyle.container}>
+      <View style={takeTheTestStyle.viewResultHeader}>
+        <Text style={takeTheTestStyle.textTitleResultHeader} >Kết quả của bạn</Text>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={[takeTheTestStyle.textCountResult, { color: Colors.green }]}>Đúng: {totalCorrect}</Text>
+          <Text style={[takeTheTestStyle.textCountResult, { color: Colors.red }]}>Sai: {totalIncorrect}</Text>
         </View>
       </View>
-    );
-  } else {
-    return (
-      <View style={takeTheTestStyle.viewItemResult} key={index}>
-        <View style={takeTheTestStyle.viewItemResultIn}>
-          <Text style={takeTheTestStyle.textItemHeader}>{item.displayedTarget}</Text>
-          {/* hiển thị đáp án  */}
-          <View style={takeTheTestStyle.viewAnswer}>
-            <View style={{alignItems:'center'}}>
-              <AntDesign name="check" size={28} color={Colors.green} />
-              <Text style={{color:Colors.green}}> {item.source}</Text>
+      <TouchableOpacity style={takeTheTestStyle.touchableOpacityRetry} onPress={handleRetry}>
+        <Text style={takeTheTestStyle.textRetry}>Làm lại bài kiểm tra</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={takeTheTestStyle.touchableOpacityRetry} onPress={() => navigation.goBack()}>
+        <Text style={takeTheTestStyle.textRetry}>Quay lại ôn tập</Text>
+      </TouchableOpacity>
+      <Text style={takeTheTestStyle.textTitleResult}>Đáp án kiểm tra</Text>
+      {answersResult && answersResult.map((item, index) => {
+        if (item.userAnswer === true || item.userAnswer === false) {
+          return (
+            <View style={takeTheTestStyle.viewItemResult} key={index}>
+              <View style={takeTheTestStyle.viewItemResultIn}>
+                <Text style={[takeTheTestStyle.textItemHeader, { borderBottomWidth: 1, borderBottomColor: Colors.itemColor }]}>{item.fileSource}</Text>
+                <Text style={takeTheTestStyle.textItemHeader}>{item.displayedTarget}</Text>
+                {/* hiển thị đáp án  */}
+                <View style={takeTheTestStyle.viewAnswer}>
+                  <View>
+                    <AntDesign name="check" size={28} color={Colors.green} />
+                    <Text style={{ color: Colors.green }}> {item.isCorrectDisplayTrue}</Text>
+                  </View>
+                  {!item.isCorrect && <View>
+                    <Feather name="x" size={28} color={Colors.red} />
+                    <Text style={{ color: Colors.red }}> {item.userAnswer}</Text>
+                  </View>}
+                </View>
+              </View>
+              {/* View người dùng trả lời */}
+              <View style={[takeTheTestStyle.viewResultBottom, { backgroundColor: item.isCorrect ? Colors.green : Colors.red }]}>
+                {item.isCorrect ? (
+                  <>
+                    <AntDesign name="check" size={24} color="white" />
+                    <Text>Đúng</Text>
+                  </>
+                ) : (
+                  <>
+                    <Feather name="x" size={24} color="white" />
+                    <Text>Sai</Text>
+                  </>
+                )}
+              </View>
             </View>
-            {!item.isCorrect&&<View style={{alignItems:'center'}}>
-              <Feather name="x" size={28} color={Colors.red} />
-              <Text style={{color:Colors.red}}> {item.userAnswer}</Text>
-            </View>}
-          </View>
-        </View>
-        {/* View người dùng trả lời */}
-        <View style={[takeTheTestStyle.viewResultBottom, { backgroundColor: item.isCorrect ? Colors.green : Colors.red }]}>
-          {item.isCorrect ? (
-            <>
-              <AntDesign name="check" size={24} color="white" />
-              <Text>Đúng</Text>
-            </>
-          ) : (
-            <>
-              <Feather name="x" size={24} color="white" />
-              <Text>Sai</Text>
-            </>
-          )}
-        </View>
-      </View>
-    );
-  }
-})}
+          );
+        } else {
+          return (
+            <View style={takeTheTestStyle.viewItemResult} key={index}>
+              <View style={takeTheTestStyle.viewItemResultIn}>
+                <Text style={takeTheTestStyle.textItemHeader}>{item.displayedTarget}</Text>
+                {/* hiển thị đáp án  */}
+                <View style={takeTheTestStyle.viewAnswer}>
+                  <View style={{ alignItems: 'center' }}>
+                    <AntDesign name="check" size={28} color={Colors.green} />
+                    <Text style={{ color: Colors.green }}> {item.fileSource}</Text>
+                  </View>
+                  {!item.isCorrect && <View style={{ alignItems: 'center' }}>
+                    <Feather name="x" size={28} color={Colors.red} />
+                    <Text style={{ color: Colors.red }}> {item.userAnswer}</Text>
+                  </View>}
+                </View>
+              </View>
+              {/* View người dùng trả lời */}
+              <View style={[takeTheTestStyle.viewResultBottom, { backgroundColor: item.isCorrect ? Colors.green : Colors.red }]}>
+                {item.isCorrect ? (
+                  <>
+                    <AntDesign name="check" size={24} color="white" />
+                    <Text>Đúng</Text>
+                  </>
+                ) : (
+                  <>
+                    <Feather name="x" size={24} color="white" />
+                    <Text>Sai</Text>
+                  </>
+                )}
+              </View>
+            </View>
+          );
+        }
+      })}
 
-    
-</View>
-</ScrollView>
+
+    </View>
+  </ScrollView>
 ));
 export default TakeTheTest;

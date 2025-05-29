@@ -1,8 +1,8 @@
 // src/viewmodels/RegisterAccountViewModel.js
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerAccount } from "../redux/user/userThunk";
-import { showToast } from "../../ToastShow/ToastUtil";
+import { registerAccount } from "../../redux/user/userThunk";
+import { showToast } from "../../../ToastShow/ToastUtil";
 
 export const useRegisterAccountViewModel = (navigation) => {
   const dispatch = useDispatch();

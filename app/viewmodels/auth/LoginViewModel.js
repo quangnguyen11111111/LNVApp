@@ -1,8 +1,8 @@
 // src/viewModels/LoginViewModel.ts
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAccount,loginWithGoogleAccount } from "../redux/user/userThunk";
-import { showToast } from "../../ToastShow/ToastUtil";
+import { loginAccount,loginWithGoogleAccount } from "../../redux/user/userThunk";
+import { showToast } from "../../../ToastShow/ToastUtil";
 import 'expo-dev-client';
 import { GoogleSignin,GoogleSigninButton  } from '@react-native-google-signin/google-signin';
 
@@ -39,6 +39,7 @@ export const useLoginViewModel = (navigation) => {
   const handleLoginWithGoogle = async (userInfo) => {
     try {
       const response = await dispatch(loginWithGoogleAccount({ userAccount:userInfo.email, userGmail:userInfo.email,userName:userInfo.name })).unwrap();
+      console.log("Response from Google login:", response);
       if (response.errCode === 0) {
         showToast("success", "Thành công", response.message);
         navigation.reset({
@@ -85,7 +86,7 @@ export const useLoginViewModel = (navigation) => {
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         const signInResult = await GoogleSignin.signIn();
     
-        // ✅ Lấy idToken từ đúng chỗ
+        //  Lấy idToken từ đúng chỗ
         const idToken = signInResult.data?.idToken;
         const userInfo = signInResult.data?.user;
     

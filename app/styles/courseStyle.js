@@ -9,7 +9,7 @@ const courseStyle = StyleSheet.create({
     titleHeader:{
         fontSize:25,
         fontWeight:"bold",
-       
+        color:Colors.white,
     },
     viewHeader:{
         marginStart:20,
@@ -21,13 +21,15 @@ const courseStyle = StyleSheet.create({
         display:"flex",
         flexDirection:"row",
         alignItems:"center",
-        gap:10
+        gap:10,
+        justifyContent:"space-between"
     },
     onPressHeader:{
         display:"flex",
         flexDirection:"row",
         alignItems:"center",
-        gap:10
+        gap:10,
+        justifyContent:"center",
     }
 })
 export default courseStyle;

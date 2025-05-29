@@ -118,6 +118,16 @@ const learnStyle = StyleSheet.create({
         borderRadius:10,
         padding:10,
         width:"100%",
+      },
+      touchableOpacityBack:{
+        flexDirection:"row",
+        gap:10,
+        alignItems:"center"
+      },
+      textFIleName:{
+        fontSize:18,
+        textTransform:"capitalize",
+        fontWeight:500
       }
 })
 export default learnStyle;

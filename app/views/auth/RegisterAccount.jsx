@@ -1,9 +1,9 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Pressable, ScrollView, ActivityIndicator } from 'react-native';
 import React from 'react';
-import Colors from "../../constant/Colors";
+import Colors from "../../../constant/Colors";
 import { FloatingLabelInput } from 'react-native-floating-label-input';
-import { useRegisterAccountViewModel } from '../viewmodels/RegisterViewModel';
-import styles from "../styles/authStyle"
+import { useRegisterAccountViewModel } from '../../viewmodels/auth/RegisterViewModel';
+import styles from "../../styles/authStyle"
 export default function RegisterAccount({ navigation }) {
   const {
     user,
@@ -17,7 +17,7 @@ export default function RegisterAccount({ navigation }) {
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}>
         <View style={{ padding: 30 }}>
-          <Image source={require("../../assets/images/logoApp.png")} style={styles.imageRegister} />
+          <Image source={require("../../../assets/images/logoApp.png")} style={styles.imageRegister} />
           <Text style={styles.textTitle}>Tạo tài khoản mới</Text>
 
           {/* Các Input */}

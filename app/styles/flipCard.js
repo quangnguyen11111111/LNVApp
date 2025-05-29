@@ -7,7 +7,16 @@ const flipCard = StyleSheet.create({
         flex:1
     },
     card:{
+        flex: 1,
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: Colors.backgroundFlower,
+                overflow: 'hidden',
+                height:250,
+                alignSelf:"center",
+                marginTop:10,
         bottom:75,
+        width:"100%"
     },
     container:{
         height:"100%",

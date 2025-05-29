@@ -8,7 +8,8 @@ const addNewLessonStyle = StyleSheet.create({
         paddingBottom:10,
         paddingStart:15,
         paddingEnd:15,
-        paddingTop:5
+        paddingTop:10,
+        gap:10
     },
     inputSourceTarget:{
         borderBottomWidth:3,

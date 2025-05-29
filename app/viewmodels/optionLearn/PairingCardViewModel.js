@@ -3,17 +3,20 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import pairingCardStyle from '../styles/pairingCardStyle';
-
+import pairingCardStyle from '../../styles/pairingCardStyle';
+import { useSelector } from 'react-redux';
+        const getRandomCards = (array, n) => {
+  const shuffled = [...array].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n);
+};
 export const PairingCardViewModel = () => {
-    const DATA = [
-        { id: '1', source: 'Dog', target: 'Chó' },
-        { id: '2', source: 'Sun', target: 'Mặt trời' },
-        { id: '3', source: 'Water', target: 'Nước' },
-        { id: '4', source: 'Cat', target: 'Mèo' },
-        { id: '5', source: 'Moon', target: 'Mặt trăng' },
-        { id: '6', source: 'Fire', target: 'Lửa' },
-      ];
+     const { isLoading, fileDetail, fileName } = useSelector(
+    (state) => state.file
+  );
+
+    const DATA = getRandomCards(fileDetail,6)
+
+
       // Hàm shuffle
       // Hàm trộn ngẫu nhiên
       const shuffleArray = (array) => {
@@ -32,8 +35,8 @@ export const PairingCardViewModel = () => {
         
         useEffect(() => {
           const merged = DATA.flatMap((item) => [
-            { id: item.id, type: 'source', text: item.source },
-            { id: item.id, type: 'target', text: item.target },
+            { id: item.detailID, type: 'source', text: item.fileSource },
+            { id: item.detailID, type: 'target', text: item.fileTarget },
           ]);
           setMixedList(shuffleArray(merged));
         }, []);// khi component được mount, gọi hàm này để trộn danh sách thẻ
@@ -61,8 +64,8 @@ export const PairingCardViewModel = () => {
           // Hàm khởi động lại trò chơi
           const restartGame = () => {
             const merged = DATA.flatMap((item) => [
-              { id: item.id, type: 'source', text: item.source },
-              { id: item.id, type: 'target', text: item.target },
+            { id: item.detailID, type: 'source', text: item.fileSource },
+            { id: item.detailID, type: 'target', text: item.fileTarget },
             ]);
             setMixedList(shuffleArray(merged));
             setFirstChoice(null);

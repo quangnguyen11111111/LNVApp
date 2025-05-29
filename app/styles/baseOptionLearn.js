@@ -26,8 +26,9 @@ const baseOptionLearn = StyleSheet.create({
         alignItems: 'center',
       },
       text: {
-        fontSize: 18,
-        color:Colors.white
+        fontSize: 25,
+        color:Colors.white,
+        fontWeight:600
       },
   completedText: {
     fontSize: 22,

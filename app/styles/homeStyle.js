@@ -50,7 +50,7 @@ viewTitle:{
 },
 textTitle:{
     fontSize: 19,
-    fontWeight: 600,
+    fontWeight: "bold",
     color:Colors.white
 },
 viewFolders:{

@@ -1,5 +1,6 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import Colors from "../../constant/Colors"
+const { width } = Dimensions.get('window');
 const baseTabsStyle = StyleSheet.create({
 container:{
     flex:1,
@@ -15,7 +16,7 @@ viewFolders:{
           },
           viewFolder:{
                           overflow: 'hidden',
-                          width: 170,
+                          width: width*0.9,
                           height: 85,
                           paddingStart: 15,
                           paddingTop: 11,
@@ -24,20 +25,20 @@ viewFolders:{
                           borderWidth: 2,
                           borderColor: Colors.primary,
                           borderRadius: 10,
-                          marginTop:10
+                          marginTop:5
                         },
         viewTopFolder:{
             flexDirection: 'row',
             alignItems: 'center',
-            columnGap: 8, // dùng columnGap thay vì gap (gap không hỗ trợ tốt trong RN)
+            columnGap: 8, 
           },
-          textTopFolder:{ fontSize: 16, color:Colors.white },
+          textTopFolder:{ fontSize: 17, color:Colors.white, fontWeight:"bold" },
         viewBottomFolder:{
             flexDirection: 'row',
             alignItems: 'center',
             marginTop: 5,
             columnGap: 8,
           },
-          textBottomFolder:{ fontSize: 13, color:Colors.white }
+          textBottomFolder:{ fontSize: 10, color:Colors.white }
 })
 export default baseTabsStyle;

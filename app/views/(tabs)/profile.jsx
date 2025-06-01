@@ -5,6 +5,7 @@ import {logoutAccount}from "../../redux/user/userThunk"
 import { FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { CommonActions } from '@react-navigation/native';
 const Profile = ({navigation}) => {
   const dispatch = useDispatch()
   return (
@@ -13,7 +14,12 @@ const Profile = ({navigation}) => {
       <StatusBar barStyle="light-content" backgroundColor="#5f75a0" />
       <TouchableOpacity onPress={()=>{
         dispatch(logoutAccount())
-        navigation.navigate("auth")
+        navigation.dispatch(
+  CommonActions.reset({
+    index: 0,
+    routes: [{ name: 'auth' }],
+  })
+);
       }}>
         <Text style={{color:'black',fontSize:20,marginTop:10}}>Logout</Text>
       </TouchableOpacity>

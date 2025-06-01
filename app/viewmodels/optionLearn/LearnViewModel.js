@@ -303,10 +303,32 @@ export const LearnViewModel = (navigation) => {
           { backgroundColor: Colors.backgroundButton },
         ]}
         onPress={() => {
-          navigation.navigate("takeTheTest");
+          
+          navigation.navigate("optionLearn", {
+  screen: "takeTheTest",
+});
         }}
       >
         <Text style={learnStyle.optionText}>Làm bài kiểm tra</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          learnStyle.submitBtn,
+          { backgroundColor: Colors.backgroundButton },
+        ]}
+        onPress={() => {
+      setArrOriginalData([]); // reset mảng dữ liệu gốc
+      setBatchIndex(0); // quay lại batch đầu tiên
+      setStage("multiple"); // bắt đầu lại từ trắc nghiệm
+      setCurrentBatch(ORIGINAL_DATA.slice(0, BATCH_SIZE)); // lấy batch đầu tiên
+      setCurrentIndex(0); // reset chỉ số từ hiện tại
+      setRepeatList([]); // reset danh sách lặp lại
+      setIsRepeating(false); // reset trạng thái lặp lại
+      setCorrectCount(0); // reset số câu đúng
+      setSelectedOption(""); // reset lựa chọn đã chọn
+        }}
+      >
+        <Text style={learnStyle.optionText}>Học lại</Text>
       </TouchableOpacity>
     </View>
   );

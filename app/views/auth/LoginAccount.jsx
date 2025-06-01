@@ -49,6 +49,7 @@ export default function LoginAccount({ navigation }) {
             labelStyles={styles.inputText}
             containerStyles={styles.viewInput}
             customLabelStyles={styles.inputCustomLabel}
+            disabled={isLoading}
           />
 
           <FloatingLabelInput
@@ -62,6 +63,7 @@ export default function LoginAccount({ navigation }) {
             labelStyles={styles.inputText}
             containerStyles={[styles.viewInput, { marginTop: 20 }]}
             customLabelStyles={styles.inputCustomLabel}
+            disabled={isLoading}
           />
 
           <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
@@ -84,13 +86,14 @@ export default function LoginAccount({ navigation }) {
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={onGoogleButtonPress}
+            disabled={isLoading}
           />
 
           <View style={styles.bottomText}>
             <Text style={{ fontFamily: "outfit", color: Colors.white }}>
               Bạn chưa có tài khoản?
             </Text>
-            <Pressable onPress={() => navigation.replace("registerAccount")}>
+            <Pressable onPress={() => navigation.replace("registerAccount")}  disabled={isLoading}>
               {({ pressed }) => (
                 <Text style={{ color: pressed ? Colors.white : Colors.primary }}>
                   Ấn vào đây

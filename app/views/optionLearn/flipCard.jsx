@@ -8,21 +8,15 @@ import baseOptionLearn from "../../styles/baseOptionLearn";
 import flipCard from "../../styles/flipCard";
 import { FlipCardViewModel } from "../../viewmodels/optionLearn/FlipCardViewModel"
 import Colors from "../../../constant/Colors";
+import takeTheTestStyle from "../../styles/takeTheTestStyle";
 const { width } = Dimensions.get("window");
 
-const data = [
-  { front: "Thẻ 1", back: "Nội dung 1" },
-  { front: "Thẻ 2", back: "Nội dung 2" },
-  { front: "Thẻ 3", back: "Nội dung 3" },
-];
 
 export default function FlipCardOption({ navigation }) {
-  // const [cardIndex, setCardIndex] = useState(0);
-  // const isCompleted = cardIndex === data.length;
-  // const lengthData = data.length;
   const { isLoading, fileDetail, fileName, isCompleted, lengthData, countIndex, cardIndex, swiperRef,
     handelBack,
-    handelNext, } = FlipCardViewModel()
+    handelNext,
+  resetLearning } = FlipCardViewModel()
   return (
     <View style={flipCard.container}>
       {/* View header */}
@@ -80,7 +74,19 @@ export default function FlipCardOption({ navigation }) {
   />
 
         ) : (
+          <>
           <Text style={baseOptionLearn.completedText}>🎉 Bạn đã hoàn thành khóa học!</Text>
+          <TouchableOpacity style={[takeTheTestStyle.touchableOpacityRetry,{width:200}]} onPress={resetLearning}>
+        <Text style={takeTheTestStyle.textRetry}>Học lại</Text>
+      </TouchableOpacity>
+          <TouchableOpacity style={[takeTheTestStyle.touchableOpacityRetry,{width:200}]}onPress={() => {
+                navigation.navigate("takeTheTest");
+              }}>
+        <Text style={takeTheTestStyle.textRetry}>Làm bài kiểm tra</Text>
+      </TouchableOpacity>
+      
+          </>
+          
         )}
       </View>
       {/* view botttom quai lại thẻ trước */}
@@ -95,13 +101,4 @@ export default function FlipCardOption({ navigation }) {
     </View>
   );
 }
-const Flashcard = React.memo(({ item }) => (
-  <FlipCard flipHorizontal={true} flipVertical={false} style={[baseOptionLearn.card, flipCard.card]}>
-    <View style={baseOptionLearn.face}>
-      <Text style={baseOptionLearn.text}>{item.fileSource}</Text>
-    </View>
-    <View style={baseOptionLearn.back}>
-      <Text style={baseOptionLearn.text}>{item.fileTarget}</Text>
-    </View>
-  </FlipCard>
-));
+

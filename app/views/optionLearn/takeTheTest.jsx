@@ -42,7 +42,10 @@ const TakeTheTest = ({ navigation }) => {
   return (
     <View style={takeTheTestStyle.container}>
       <View style={pairingCardStyle.viewHeader}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.reset({
+            index: 0,
+            routes: [{ name: "homeOption" }],
+          })}>
           <Feather name="x" size={32} color="white" />
         </TouchableOpacity>
       </View>

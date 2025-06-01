@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, ActivityIndicator, ScrollView, FlatList } from 'react-native'
 import React from 'react'
 import Colors from '../../../../constant/Colors'
 import baseTabsStyle from '../../../styles/baseTabsStyle'
@@ -8,7 +8,19 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { Modal, StyleSheet } from 'react-native';
 import lessonDetailStyle from '../../../styles/lessonDetailStyle'
 const LessonDetail = ({ navigation }) => {
-  const { isLoadingDetail, folderName, folderDetail, handleGetDetailFile, handleBack, toggleModal, isModalVisible, handleOpenUpdateFolderModal, handleDeleteFolder,isSetting } = LessonDetailViewModel(navigation)
+  const {  isLoadingDetail,
+    folderName,
+    folderDetail,
+    handleGetDetailFile,
+    handleBack,
+    toggleModal,
+    isModalVisible,
+    handleOpenUpdateFolderModal,
+    handleDeleteFolder,
+    isSetting,
+    onEndReached,
+    isLoadingMore ,
+  dataFolder} = LessonDetailViewModel(navigation)
   return (
     <View style={courseStyle.container}>
 
@@ -22,18 +34,16 @@ const LessonDetail = ({ navigation }) => {
         </TouchableOpacity>}
         
       </View>
-
-      <ScrollView>
-        {/* View folders */}
-        <View style={[baseTabsStyle.viewFolders, { marginTop: 5 }]}>
-          {/* View folder */}
-          {
-            isLoadingDetail ? <ActivityIndicator size="large" color={Colors.backgroundFlower} /> :
-              folderDetail && folderDetail.length > 0 ? folderDetail.map((item, index) => {
-                {
-                  return (
-                    <TouchableOpacity onPress={() => { handleGetDetailFile(item.fileID, item.fileName) }} key={index} >
-                      <View style={baseTabsStyle.viewFolder} >
+      {dataFolder.length == 0 && <Text style={{textAlign:'center', fontSize:18,
+        marginTop: 10, color: Colors.backgroundFlower
+      }} >Không có dữ liệu</Text> }
+<FlatList
+  data={dataFolder}
+  keyExtractor={(item, index) => item.fileID?.toString() || index.toString()}
+  numColumns={1} 
+  renderItem={({ item }) => (
+    <TouchableOpacity onPress={() => { handleGetDetailFile(item.fileID, item.fileName) }}>
+                     <View style={[baseTabsStyle.viewFolder, { marginBottom: 5 }]}>
                         {/* View Top folder */}
                         <View
                           style={baseTabsStyle.viewTopFolder}
@@ -62,15 +72,14 @@ const LessonDetail = ({ navigation }) => {
                         </View>
                       </View>
                     </TouchableOpacity>
-                  )
-                }
-              }) :
-                <Text>Hiện không có file nào</Text>
-          }
 
-
-        </View>
-      </ScrollView>
+  )}
+  onEndReached={onEndReached}
+  onEndReachedThreshold={0.5}
+  ListFooterComponent={isLoadingMore && <ActivityIndicator size="large" color={Colors.backgroundFlower} />}
+  contentContainerStyle={[baseTabsStyle.viewFolders, { marginTop: 5 }]}
+/>
+{/* } */}
       {/* Gọi modal tại đây */}
       <OptionModal
         isVisible={isModalVisible}
@@ -105,4 +114,3 @@ const OptionModal = ({ isVisible, toggleModal, handleOpenUpdateFolderModal, hand
     </Modal>
   );
 };
-

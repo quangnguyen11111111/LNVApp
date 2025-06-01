@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, ActivityIndicator, ScrollView, FlatList } from 'react-native'
 import React from 'react'
 import baseTabsStyle from '../../../styles/baseTabsStyle'
 import courseStyle from '../../../styles/courseStyle'
@@ -9,16 +9,27 @@ import baseAddNewStyle from '../../../styles/baseAddNewStyle';
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 const CourseDetail = ({ navigation }) => {
 
-  const { isLoading, folder, handleGetDetailFolder, user,isSearch,toggleSearch,searchRef,dataInput,setDataInput,dataFolder } = CourseDetailViewModel({ navigation })
+  const { isLoading,
+    folder,
+    handleGetDetailFolder,
+    user,
+    isSearch,
+    toggleSearch,
+    searchRef,
+    dataInput,
+    setDataInput,
+    dataFolder,
+    onEndReached,
+    isLoadingMore,
+    handleSearchFolder} = CourseDetailViewModel({ navigation })
   return (
 
     <View style={courseStyle.container}>
-      <>
-        {isLoading ?
+      {/* <> */}
+        {/* {isLoading ?
           <ActivityIndicator size="large" color={Colors.backgroundFlower} />
           :
-
-          <>
+          <> */}
             <View style={courseStyle.viewHeader}>
               <Text style={[courseStyle.titleHeader]}>Course</Text>
               <TouchableOpacity style={[courseStyle.onPressHeader, { paddingHorizontal: 15 }]} onPress={toggleSearch}>
@@ -32,53 +43,44 @@ const CourseDetail = ({ navigation }) => {
                 onChangeText={setDataInput}
                 ref={searchRef}
                 autoFocus={true}
+                returnKeyType="search" // hoặc "done" tuỳ ngữ cảnh
+  onSubmitEditing={() => {
+    handleSearchFolder()
+  }}
               />
             </View>}
             
-            <ScrollView style={{ backgroundColor: Colors.backgroundColor }}>
-              {/* View folders */}
-              <View style={[baseTabsStyle.viewFolders, { marginTop: 5 }]}>
-                {/* View folder */}
-                {
-                  dataFolder && dataFolder.length > 0 && dataFolder.map((item, index) => {
-                    return (
-                      <TouchableOpacity onPress={() => { handleGetDetailFolder(user.userID, item.folderID) }} key={index} >
-                        <View style={baseTabsStyle.viewFolder} >
-                          {/* View Top folder */}
-                          <View
-                            style={baseTabsStyle.viewTopFolder}
-                          >
-                            <AntDesign name="folderopen" size={32} color="white" />
-                            <Text
-                              style={baseTabsStyle.textTopFolder}
-                              numberOfLines={1}
-                              ellipsizeMode="tail"
-                            >
-                              {item.folderName}
-                            </Text>
-                          </View>
-                          {/* View bottom folder */}
-                          <View
-                            style={baseTabsStyle.viewBottomFolder}
-                          >
-                            <FontAwesome name="user-circle" size={15} color="white" />
-                            <Text
-                              style={baseTabsStyle.textBottomFolder}
-                              numberOfLines={1}
-                              ellipsizeMode="tail"
-                            >
-                              {item.user.userName}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    )
-                  })
-                }
-              </View>
-            </ScrollView>
-          </>}
-      </>
+
+<FlatList
+  data={dataFolder}
+  keyExtractor={(item, index) => item.folderID?.toString() || index.toString()}
+  numColumns={1} 
+  renderItem={({ item }) => (
+    <TouchableOpacity onPress={() => handleGetDetailFolder(user.userID, item.folderID)}>
+      <View style={[baseTabsStyle.viewFolder, { marginBottom: 5 }]}>
+        <View style={baseTabsStyle.viewTopFolder}>
+          <AntDesign name="folderopen" size={32} color="white" />
+          <Text style={baseTabsStyle.textTopFolder} numberOfLines={1} ellipsizeMode="tail">
+            {item.folderName}
+          </Text>
+        </View>
+        <View style={baseTabsStyle.viewBottomFolder}>
+          <FontAwesome name="user-circle" size={15} color="white" />
+          <Text style={baseTabsStyle.textBottomFolder} numberOfLines={1} ellipsizeMode="tail">
+            {item.user.userName}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  )}
+  onEndReached={onEndReached}
+  onEndReachedThreshold={0.5}
+  ListFooterComponent={isLoadingMore && <ActivityIndicator size="small" color={Colors.backgroundFlower} />}
+  contentContainerStyle={[baseTabsStyle.viewFolders, { marginTop: 5 }]}
+/>
+
+          {/* </>}
+      </> */}
 
     </View>
   )

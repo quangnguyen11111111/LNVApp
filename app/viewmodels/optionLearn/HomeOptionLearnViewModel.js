@@ -82,7 +82,6 @@ export const HomeOptionLearnViewModel = (navigation) => {
       { cancelable: true }
     );
   };
-  console.log("fileID", fileID);
   
   return {
     isLoading,

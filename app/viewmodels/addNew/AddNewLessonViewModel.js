@@ -111,10 +111,8 @@ const handleCreateFile = async () => {
       arrDataDetail: arrDataDetail,
     };
      response = await dispatch(handleUpdateFileThunk(fileData));
-     console.log('đã cập nhật file', response);
      
     }else{
-      console.log('đang tạo file mới');
       
     const fileData = {
       fileName: nameFile,

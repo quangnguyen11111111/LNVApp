@@ -11,18 +11,18 @@ export const HomeViewModel = (navigation) => {
       const dispatch = useDispatch();
       const [refreshing, setRefreshing] = useState(false);
       useEffect(()=>{
-           dispatch(handleGetAllFolderUserThunk(user.userID))
-           dispatch(handleGetAllFolderExceptUserThunk(user.userID))
+           dispatch(handleGetAllFolderUserThunk({ userID: user.userID, offset: 0, limit:10 }))
+           dispatch(handleGetAllFolderExceptUserThunk({ userID: user.userID, offset: 0, limit:10 }))
       },[])
       const onRefresh = async () => {
         setRefreshing(true);
-        await dispatch(handleGetAllFolderExceptUserThunk(user.userID));
-        dispatch(handleGetAllFolderUserThunk(user.userID))
+        await dispatch(handleGetAllFolderExceptUserThunk({ userID: user.userID, offset: 0, limit:10 }));
+       await dispatch(handleGetAllFolderUserThunk({userID:user.userID,offset: 0,limit: 10}))
         setRefreshing(false);
       };
           const handleGetDetailFolder=async(userID,folderID)=>{
             
-            dispatch(handleGetDetailFolderThunk({userID,folderID}))
+          await  dispatch(handleGetDetailFolderThunk({userID,folderID,offset: 0, limit:10}))
             navigation.navigate("course", {
   screen: "lessonDetail",
   params: {

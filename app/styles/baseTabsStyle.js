@@ -9,8 +9,8 @@ container:{
 viewFolders:{
             marginTop: 20,
             display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
+            flexDirection: "column",
+            alignItems: "center",
             gap: 10,
             justifyContent:'center'
           },

@@ -39,7 +39,6 @@ export const useLoginViewModel = (navigation) => {
   const handleLoginWithGoogle = async (userInfo) => {
     try {
       const response = await dispatch(loginWithGoogleAccount({ userAccount:userInfo.email, userGmail:userInfo.email,userName:userInfo.name })).unwrap();
-      console.log("Response from Google login:", response);
       if (response.errCode === 0) {
         showToast("success", "Thành công", response.message);
         navigation.reset({
@@ -52,7 +51,6 @@ export const useLoginViewModel = (navigation) => {
       }
     } catch (error) {
       showToast("error", "Lỗi kết nối", "Hệ thống bị mất kết nối");
-      console.log(error);
       
     }
   };

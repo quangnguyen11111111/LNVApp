@@ -29,7 +29,10 @@ const handelNext = () => {
     swiperRef.current?.jumpToCardIndex(newIndex);
   }
 };
-
+const resetLearning = () => {
+  setCardIndex(0);
+  swiperRef.current?.jumpToCardIndex(0);
+};
   return {
     isLoading,
     fileDetail,
@@ -41,5 +44,6 @@ const handelNext = () => {
     swiperRef,
     handelBack,
     handelNext,
+    resetLearning
   };
 };

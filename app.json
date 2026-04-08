@@ -2,6 +2,7 @@
   "expo": {
     "name": "LNVApp",
     "slug": "LNVApp",
+    "plugins":["@react-native-google-signin/google-signin"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,13 +17,20 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile":"./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.quangboongg.LNVApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0883b454-0bd2-40a4-8b40-bb450644a278"
+      }
     }
   }
 }
